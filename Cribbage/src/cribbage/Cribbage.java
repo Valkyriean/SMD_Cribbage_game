@@ -246,6 +246,7 @@ private void play() {
 				// Another "go" after previous one with no intervening cards
 				scores[s.lastPlayer] += 1;
 				updateScore(s.lastPlayer);
+				System.out.println("GO");
 				// lastPlayer gets 1 point for a "go"
 				s.newSegment = true;
 			} else {
@@ -343,6 +344,8 @@ private void play() {
 			s.reset(segments);
 		}
 	}
+	scores[s.lastPlayer] += 1;
+	updateScore(s.lastPlayer);
 }
 
 void showHandsCrib() {
