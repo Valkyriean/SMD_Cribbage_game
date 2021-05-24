@@ -206,6 +206,8 @@ private void starter(Hand pack) {
 	if (dealt.getRank() == Rank.JACK ) {
 		scores[1] += 2;
 		updateScore(1);
+		System.out.println("Jack start +2");
+
 	}
 	dealt.setVerso(false);
 	transfer(dealt, starter);
@@ -251,7 +253,7 @@ private void play() {
 				// Another "go" after previous one with no intervening cards
 				scores[s.lastPlayer] += 1;
 				updateScore(s.lastPlayer);
-				System.out.println("GO");
+				System.out.println("GO +1");
 				// lastPlayer gets 1 point for a "go"
 				s.newSegment = true;
 			} else {
@@ -272,12 +274,16 @@ private void play() {
 			}
 			switch (pairCount) {
 				case 2:
+					System.out.println("Pair +2");
+
 					scores[s.lastPlayer] += 2;
 					break;
 				case 3:
+					System.out.println("Pair +6");
 					scores[s.lastPlayer] += 6;
 					break;
 				case 4:
+					System.out.println("Pair +12");
 					scores[s.lastPlayer] += 12;
 					break;
 			}
@@ -289,7 +295,6 @@ private void play() {
 				Rank r = (Rank) s.segment.get(i).getRank();
 				sequence.add(r.order);
 				Collections.sort(sequence);
-				System.out.println(sequence.toString());
 				Set seqSet = new HashSet(sequence);
 				if(seqSet.size() < sequence.size()) {
 					break;
@@ -299,27 +304,30 @@ private void play() {
 				}
 				i--;
 			}
-			System.out.println(runsCount);
 
 			switch (runsCount) {
 			case 3:
-				System.out.println("+3");
+				System.out.println("Runs +3");
 				scores[s.lastPlayer] += 3;
 				break;
 			case 4:
-				System.out.println("+4");
+				System.out.println("Runs +4");
 
 				scores[s.lastPlayer] += 4;
 				break;
 			case 5:
-				System.out.println("+5");
+				System.out.println("Runs +5");
 
 				scores[s.lastPlayer] += 5;
 				break;
 			case 6:
+				System.out.println("Runs +6");
+
 				scores[s.lastPlayer] += 6;
 				break;
 			case 7:
+				System.out.println("Runs +7");
+
 				scores[s.lastPlayer] += 7;
 				break;
 			}
@@ -331,12 +339,15 @@ private void play() {
 				// lastPlayer gets 2 points for a 31
 				scores[s.lastPlayer] += 2;
 				updateScore(s.lastPlayer);
+				System.out.println("31 +2");
 				s.newSegment = true;
 				currentPlayer = (currentPlayer+1) % 2;
 			} else {
 				if (total(s.segment) == fifteen) {
 					scores[s.lastPlayer] += 2;
 					updateScore(s.lastPlayer);
+					System.out.println("15 +2");
+
 				}
 				// if total(segment) == 15, lastPlayer gets 2 points for a 15
 				if (!s.go) { // if it is "go" then same player gets another turn
@@ -349,8 +360,11 @@ private void play() {
 			s.reset(segments);
 		}
 	}
+	
 	scores[s.lastPlayer] += 1;
 	updateScore(s.lastPlayer);
+	System.out.println("GO +1");
+
 }
 
 void showHandsCrib() {
@@ -358,10 +372,17 @@ void showHandsCrib() {
 	FlushScore fs = new FlushScore();
 	RunScore rs = new RunScore();
 	for (int i = 0; i <nPlayers; i++ ){
+		int sc = 0;
+		sc = rs.getScore(starter,handcards.get(i));
+		System.out.println("player: "+ i + "run score: " + sc);
 		scores[i] += rs.getScore(starter,handcards.get(i));
 		updateScore(i);
+		sc = s.getScore(starter,handcards.get(i));
+		System.out.println("player: "+ i + "pair score: " + sc);
 		scores[i] += s.getScore(starter,handcards.get(i));
 		updateScore(i);
+		sc = fs.getScore(starter,handcards.get(i));
+		System.out.println("player: "+ i + "flush score: " + sc);
 		scores[i] += fs.getScore(starter,handcards.get(i));
 		updateScore(i);
 	}
@@ -369,10 +390,17 @@ void showHandsCrib() {
 
 	// score player 0 (non dealer)
 	// score player 1 (dealer)
+	int sc = 0;
+	sc = rs.getScore(starter,crib.getCardList());
+	System.out.println("player1: " + "crib mark" +"run score: " + sc);
 	scores[1] += rs.getScore(starter,crib.getCardList());
 	updateScore(1);
+	sc = s.getScore(starter,crib.getCardList());
+	System.out.println("player1: " + "crib mark" +"pair score: " + sc);
 	scores[1] += s.getScore(starter,crib.getCardList());
 	updateScore(1);
+	sc = fs.getScore(starter,crib.getCardList());
+	System.out.println("player1: " + "crib mark" +"flush score: " + sc);
 	scores[1] += fs.getScore(starter,crib.getCardList());
 	updateScore(1);
 }
