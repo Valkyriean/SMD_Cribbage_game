@@ -198,6 +198,10 @@ private void starter(Hand pack) {
 	starter.setView(this, layout);
 	starter.draw();
 	Card dealt = randomCard(pack);
+	if (dealt.getRank() == Rank.JACK ) {
+		scores[1] += 2;
+		updateScore(1);
+	}
 	dealt.setVerso(false);
 	transfer(dealt, starter);
 }
@@ -226,6 +230,7 @@ class Segment {
 
 private void play() {
 	final int thirtyone = 31;
+	final int fifteen = 15;
 	List<Hand> segments = new ArrayList<>();
 	int currentPlayer = 0; // Player 1 is dealer
 	Segment s = new Segment();
@@ -236,6 +241,8 @@ private void play() {
 		if (nextCard == null) {
 			if (s.go) {
 				// Another "go" after previous one with no intervening cards
+				scores[s.lastPlayer] += 1;
+				updateScore(s.lastPlayer);
 				// lastPlayer gets 1 point for a "go"
 				s.newSegment = true;
 			} else {
@@ -246,11 +253,19 @@ private void play() {
 		} else {
 			s.lastPlayer = currentPlayer; // last Player to play a card in this segment
 			transfer(nextCard, s.segment);
+			// check run and pair using s
+			
 			if (total(s.segment) == thirtyone) {
 				// lastPlayer gets 2 points for a 31
+				scores[s.lastPlayer] += 2;
+				updateScore(s.lastPlayer);
 				s.newSegment = true;
 				currentPlayer = (currentPlayer+1) % 2;
 			} else {
+				if (total(s.segment) == fifteen) {
+					scores[s.lastPlayer] += 2;
+					updateScore(s.lastPlayer);
+				}
 				// if total(segment) == 15, lastPlayer gets 2 points for a 15
 				if (!s.go) { // if it is "go" then same player gets another turn
 					currentPlayer = (currentPlayer+1) % 2;
