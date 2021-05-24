@@ -7,8 +7,8 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashSet;
 
-public class RunScore {
-
+public class RunScore implements IScoreRule{
+    @Override
     public int getScore(Hand start, ArrayList<Card> cards) {
         if (cards.size() !=5){
             cards.add(start.getCardList().get(0));

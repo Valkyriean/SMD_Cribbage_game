@@ -368,50 +368,18 @@ private void play() {
 }
 
 void showHandsCrib() {
-	PairsScore s = new PairsScore();
-	FlushScore fs = new FlushScore();
-	RunScore rs = new RunScore();
-	FifteenScore ff = new FifteenScore();
-	for (int i = 0; i <nPlayers; i++ ){
-		int sc = 0;
-		sc = ff.getScore(starter,handcards.get(i));
-		System.out.println("player: "+ i + "fifteen score: " + sc);
-		scores[i] += ff.getScore(starter,handcards.get(i));
-		updateScore(i);
-		sc = rs.getScore(starter,handcards.get(i));
-		System.out.println("player: "+ i + "run score: " + sc);
-		scores[i] += rs.getScore(starter,handcards.get(i));
-		updateScore(i);
-		sc = s.getScore(starter,handcards.get(i));
-		System.out.println("player: "+ i + "pair score: " + sc);
-		scores[i] += s.getScore(starter,handcards.get(i));
-		updateScore(i);
-		sc = fs.getScore(starter,handcards.get(i));
-		System.out.println("player: "+ i + "flush score: " + sc);
-		scores[i] += fs.getScore(starter,handcards.get(i));
+
+	IScoreRule rules = new CompositeScore();
+	for (int i = 0; i < nPlayers; i++){
+		scores[i] += rules.getScore(starter,handcards.get(i));
 		updateScore(i);
 	}
 
-
+	scores[1] += rules.getScore(starter,crib.getCardList());
+	updateScore(1);
 	// score player 0 (non dealer)
 	// score player 1 (dealer)
-	int sc = 0;
-	sc = ff.getScore(starter,crib.getCardList());
-	System.out.println("player1: " + "crib mark" +"fifteen score: " + sc);
-	scores[1] += ff.getScore(starter,crib.getCardList());
-	updateScore(1);
-	sc = rs.getScore(starter,crib.getCardList());
-	System.out.println("player1: " + "crib mark" +"run score: " + sc);
-	scores[1] += rs.getScore(starter,crib.getCardList());
-	updateScore(1);
-	sc = s.getScore(starter,crib.getCardList());
-	System.out.println("player1: " + "crib mark" +"pair score: " + sc);
-	scores[1] += s.getScore(starter,crib.getCardList());
-	updateScore(1);
-	sc = fs.getScore(starter,crib.getCardList());
-	System.out.println("player1: " + "crib mark" +"flush score: " + sc);
-	scores[1] += fs.getScore(starter,crib.getCardList());
-	updateScore(1);
+
 }
 
   public Cribbage()

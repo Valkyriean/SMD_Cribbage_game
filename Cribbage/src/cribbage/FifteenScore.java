@@ -6,7 +6,9 @@ import ch.aplu.jcardgame.Hand;
 import java.util.ArrayList;
 import java.util.Comparator;
 
-public class FifteenScore {
+public class FifteenScore implements IScoreRule {
+
+    @Override
     public int getScore(Hand start, ArrayList<Card> cards){
         if (cards.size() !=5){
             cards.add(start.getCardList().get(0));
