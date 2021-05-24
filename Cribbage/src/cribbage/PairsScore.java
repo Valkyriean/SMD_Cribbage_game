@@ -10,7 +10,9 @@ import java.util.Comparator;
 public class PairsScore {
 
     public int getScore(Hand start, ArrayList<Card> cards) {
-        cards.add(start.getCardList().get(0));
+        if(cards.size() != 5){
+            cards.add(start.getCardList().get(0));
+        }
         cards.sort(Comparator.comparingInt(Card::getRankId));
         int [] pair = new int[5];
         pair[0] = 1;

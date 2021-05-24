@@ -371,8 +371,13 @@ void showHandsCrib() {
 	PairsScore s = new PairsScore();
 	FlushScore fs = new FlushScore();
 	RunScore rs = new RunScore();
+	FifteenScore ff = new FifteenScore();
 	for (int i = 0; i <nPlayers; i++ ){
 		int sc = 0;
+		sc = ff.getScore(starter,handcards.get(i));
+		System.out.println("player: "+ i + "fifteen score: " + sc);
+		scores[i] += ff.getScore(starter,handcards.get(i));
+		updateScore(i);
 		sc = rs.getScore(starter,handcards.get(i));
 		System.out.println("player: "+ i + "run score: " + sc);
 		scores[i] += rs.getScore(starter,handcards.get(i));
@@ -391,6 +396,10 @@ void showHandsCrib() {
 	// score player 0 (non dealer)
 	// score player 1 (dealer)
 	int sc = 0;
+	sc = ff.getScore(starter,crib.getCardList());
+	System.out.println("player1: " + "crib mark" +"fifteen score: " + sc);
+	scores[1] += ff.getScore(starter,crib.getCardList());
+	updateScore(1);
 	sc = rs.getScore(starter,crib.getCardList());
 	System.out.println("player1: " + "crib mark" +"run score: " + sc);
 	scores[1] += rs.getScore(starter,crib.getCardList());
