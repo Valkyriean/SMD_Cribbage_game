@@ -228,6 +228,9 @@ class Segment {
 		}
 }
 
+/**
+ * 
+ */
 private void play() {
 	final int thirtyone = 31;
 	final int fifteen = 15;
@@ -253,7 +256,70 @@ private void play() {
 		} else {
 			s.lastPlayer = currentPlayer; // last Player to play a card in this segment
 			transfer(nextCard, s.segment);
-			// check run and pair using s
+			// check pair
+			int i = s.segment.getNumberOfCards()-1;
+			int pairCount = 1;
+			while(i>0 && s.segment.get(i).getRank()== s.segment.get(i-1).getRank()) {
+				System.out.print(i);
+				pairCount++;
+				i--;
+			}
+			switch (pairCount) {
+				case 2:
+					scores[s.lastPlayer] += 2;
+					break;
+				case 3:
+					scores[s.lastPlayer] += 6;
+					break;
+				case 4:
+					scores[s.lastPlayer] += 12;
+					break;
+			}
+			//check runs
+			int runsCount = 1;
+			ArrayList<Integer> sequence = new ArrayList<>();
+			i = s.segment.getNumberOfCards()-1;
+			while(i>=0) {
+				Rank r = (Rank) s.segment.get(i).getRank();
+				sequence.add(r.order);
+				Collections.sort(sequence);
+				System.out.println(sequence.toString());
+				Set seqSet = new HashSet(sequence);
+				if(seqSet.size() < sequence.size()) {
+					break;
+				}
+				if(sequence.get(sequence.size()-1)-sequence.get(0) == sequence.size()-1) {
+					runsCount = sequence.size();
+				}
+				i--;
+			}
+			System.out.println(runsCount);
+
+			switch (runsCount) {
+			case 3:
+				System.out.println("+3");
+				scores[s.lastPlayer] += 3;
+				break;
+			case 4:
+				System.out.println("+4");
+
+				scores[s.lastPlayer] += 4;
+				break;
+			case 5:
+				System.out.println("+5");
+
+				scores[s.lastPlayer] += 5;
+				break;
+			case 6:
+				scores[s.lastPlayer] += 6;
+				break;
+			case 7:
+				scores[s.lastPlayer] += 7;
+				break;
+			}
+			updateScore(s.lastPlayer);
+
+			
 			
 			if (total(s.segment) == thirtyone) {
 				// lastPlayer gets 2 points for a 31
