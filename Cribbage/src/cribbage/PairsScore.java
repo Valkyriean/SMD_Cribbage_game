@@ -6,6 +6,7 @@ import ch.aplu.jcardgame.Hand;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.HashMap;
 
 public class PairsScore {
 
@@ -14,33 +15,25 @@ public class PairsScore {
             cards.add(start.getCardList().get(0));
         }
         cards.sort(Comparator.comparingInt(Card::getRankId));
-        int [] pair = new int[5];
-        pair[0] = 1;
-        int i = 1;
+        HashMap<Integer,Integer> map = new HashMap<>();
+        map.clear();
+        int i = 0;
         while (i < 5){
-            if (cards.get(i-1).getRankId() == cards.get(i).getRankId()){
-                pair[i] += pair[i-1] + 1;
+            int id = cards.get(i).getRankId();
+            if (map.containsKey(id)){
+                map.put(id,map.get(id) + 1);
             } else {
-                pair[i] = 1;
+                map.put(id,1);
             }
-            i++;
+            i ++;
         }
-        int maxpair = 1;
-        for (int j = 0; j < 5; j++){
-            if (pair[j] != 1 && pair[j] > maxpair){
-                maxpair = pair[j];
+        int score = 0;
+        for (Integer key : map.keySet()){
+            if (map.get(key) > 1){
+                score += map.get(key) * (map.get(key) - 1);
             }
         }
-
-        switch (maxpair){
-            case 2:
-                return 2;
-            case 3:
-                return 6;
-            case 4:
-                return 12;
-            default:
-                return 0;
-        }
+        return  score;
     }
+
 }
