@@ -349,9 +349,27 @@ private void play() {
 }
 
 void showHandsCrib() {
+	PairsScore s = new PairsScore();
+	FlushScore fs = new FlushScore();
+	RunScore rs = new RunScore();
+	for (int i = 0; i <nPlayers; i++ ){
+		scores[i] += rs.getScore(starter,handcards.get(i));
+		updateScore(i);
+		scores[i] += s.getScore(starter,handcards.get(i));
+		updateScore(i);
+		scores[i] += fs.getScore(starter,handcards.get(i));
+		updateScore(i);
+	}
+
+
 	// score player 0 (non dealer)
 	// score player 1 (dealer)
-	// score crib (for dealer)
+	scores[1] += rs.getScore(starter,crib.getCardList());
+	updateScore(1);
+	scores[1] += s.getScore(starter,crib.getCardList());
+	updateScore(1);
+	scores[1] += fs.getScore(starter,crib.getCardList());
+	updateScore(1);
 }
 
   public Cribbage()

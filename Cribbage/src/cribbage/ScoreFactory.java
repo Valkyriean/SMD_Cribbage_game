@@ -10,24 +10,20 @@ public class ScoreFactory {
         return instance;
     }
 
-    public IScoreRule getScoreRule (Rules r){
-        switch (r) {
-            case TOTALVALUE:
-                return new TotalFaceValueScore();
-            case RUNS:
-                return new RunScore();
-            case PAIRS:
-                return new PairsScore();
-            case FLUSH:
-                return new FlushScore();
-            case STARTER:
-                return new StarterScore();
-            case COMPOSITE:
-                return new CompositeScore();
-            case LASTCARD:
-                return new LastCardScore();
-            default:
-                return null;
-        }
-    }
+//    public IScoreRule getScoreRule (Rules r){
+//        switch (r) {
+//            case RUNS:
+//                return new RunScore();
+////            case PAIRS:
+////                return new PairsScore();
+//            case FLUSH:
+//                return new FlushScore();
+//            case COMPOSITE:
+//                return new CompositeScore();
+//            case LASTCARD:
+//                return new LastCardScore();
+//            default:
+//                return null;
+//        }
+//    }
 }
