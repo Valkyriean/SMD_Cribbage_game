@@ -126,6 +126,7 @@ public class Cribbage extends CardGame {
   private final Actor[] scoreActors = {null, null}; //, null, null };
   private final Location textLocation = new Location(350, 450);
   private final Hand[] hands = new Hand[nPlayers];
+  private final ArrayList<ArrayList<Card>> handcards = new ArrayList<>();
   private Hand starter;
   private Hand crib;
 
@@ -188,6 +189,10 @@ private void discardToCrib() {
 			transfer(player.discard(), crib);
 		}
 		crib.sort(Hand.SortType.POINTPRIORITY, true);
+	}
+	for (int i = 0; i <nPlayers; i++){
+		ArrayList<Card> cards = (ArrayList<Card>) players[i].hand.getCardList().clone();
+		handcards.add(cards);
 	}
 }
 
