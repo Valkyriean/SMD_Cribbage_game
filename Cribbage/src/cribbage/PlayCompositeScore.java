@@ -1,6 +1,5 @@
 package cribbage;
 
-import ch.aplu.jcardgame.Card;
 import ch.aplu.jcardgame.Hand;
 
 import java.util.ArrayList;
@@ -18,7 +17,7 @@ public class PlayCompositeScore implements IScoreRule{
     }
 
     public PlayCompositeScore (){
-        rules.add(new PlayPairScore());
+        rules.add(new PlayPairsScore());
         rules.add(new PlayRunsScore());
     }
 }

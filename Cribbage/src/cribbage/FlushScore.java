@@ -5,29 +5,36 @@ import ch.aplu.jcardgame.Hand;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.HashMap;
 
 public class FlushScore implements IScoreRule{
 
     @Override
     public int getScore(Hand hand) {
+        Card start = hand.getLast();
         ArrayList<Card> cards = hand.getCardList();
-        int i = 1;
-        int [] flush = new int[5];
-        flush[0] = 1;
-        while (i < 5){
-            if (cards.get(i-1).getSuitId() == cards.get(i).getSuitId()){
-                flush[i] += flush[i-1] + 1;
+        HashMap<Integer, Integer> map = new HashMap<>();
+
+        for (Card c : cards){
+            if (c.equals(start)){
+                continue;
+            }
+            if (!map.containsKey(c.getSuitId())){
+                map.put(c.getSuitId(),1);
             } else {
-                flush[i] = 1;
-            }
-            i++;
-        }
-        int maxflush = 1;
-        for (int j = 0; j < 5; j++){
-            if (flush[j] != 1 && flush[j] > maxflush){
-                maxflush = flush[j];
+                map.put(c.getSuitId(), map.get(c.getSuitId()) + 1);
             }
         }
-        return maxflush > 3 ? maxflush : 0;
+
+        int max = 0;
+        for (Integer key : map.keySet()){
+            if (map.get(key)>3){
+                max = map.get(key);
+                if (map.containsKey(start.getSuitId())){
+                    max += 1;
+                }
+            }
+        }
+        return max;
     }
 }

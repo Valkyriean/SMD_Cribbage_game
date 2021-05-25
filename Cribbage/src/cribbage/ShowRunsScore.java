@@ -7,10 +7,11 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashSet;
 
-public class RunScore implements IScoreRule{
+public class ShowRunsScore implements IScoreRule{
     @Override
     public int getScore(Hand hand) {
-        ArrayList<Card> cards = hand.getCardList();
+        ArrayList<Card> cards = (ArrayList<Card>) hand.getCardList().clone();
+        cards.sort(Comparator.comparingInt(Card::getRankId));
         int [] runs = new int[5];
         int count = 1;
         int slow  = 0;

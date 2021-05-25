@@ -5,15 +5,13 @@ import ch.aplu.jcardgame.Card;
 import ch.aplu.jcardgame.Hand;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.HashMap;
 
-public class PairsScore implements IScoreRule{
+public class ShowPairsScore implements IScoreRule{
     @Override
     public int getScore(Hand hand) {
         ArrayList<Card> cards = hand.getCardList();
         HashMap<Integer,Integer> map = new HashMap<>();
-        map.clear();
         int i = 0;
         while (i < 5){
             int id = cards.get(i).getRankId();

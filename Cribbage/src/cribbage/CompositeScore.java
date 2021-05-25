@@ -14,14 +14,21 @@ public class CompositeScore implements IScoreRule{
         for (IScoreRule rule: rules){
             int temp = rule.getScore(hand);
             score += temp;
+//            System.out.println(rule.getClass()+" "+"score :" + temp);
         }
         return score;
     }
 
-    public CompositeScore (){
-        rules.add(ScoreFactory.getInstance().getScoreRule(Rules.FIFTEEN));
-        rules.add(ScoreFactory.getInstance().getScoreRule(Rules.RUNS));
-        rules.add(ScoreFactory.getInstance().getScoreRule(Rules.PAIRS));
-        rules.add(ScoreFactory.getInstance().getScoreRule(Rules.FLUSH));
+    public CompositeScore (boolean play){
+        if (play){
+            rules.add(ScoreFactory.getInstance().getScoreRule(Rules.PLAYPAIRS));
+            rules.add(ScoreFactory.getInstance().getScoreRule(Rules.PLAYRUNS));
+        } else {
+            rules.add(ScoreFactory.getInstance().getScoreRule(Rules.FIFTEEN));
+            rules.add(ScoreFactory.getInstance().getScoreRule(Rules.SHOWRUNS));
+            rules.add(ScoreFactory.getInstance().getScoreRule(Rules.SHOWPAIRS));
+            rules.add(ScoreFactory.getInstance().getScoreRule(Rules.FLUSH));
+        }
+
     }
 }
