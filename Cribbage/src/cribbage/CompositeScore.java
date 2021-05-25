@@ -14,7 +14,7 @@ public class CompositeScore implements IScoreRule{
         for (IScoreRule rule: rules){
             int temp = rule.getScore(hand);
             score += temp;
-//            System.out.println(rule.getClass()+" "+"score :" + temp);
+            System.out.println(rule.getClass()+" "+"score :" + temp);
         }
         return score;
     }
@@ -28,6 +28,7 @@ public class CompositeScore implements IScoreRule{
             rules.add(ScoreFactory.getInstance().getScoreRule(Rules.SHOWRUNS));
             rules.add(ScoreFactory.getInstance().getScoreRule(Rules.SHOWPAIRS));
             rules.add(ScoreFactory.getInstance().getScoreRule(Rules.FLUSH));
+            rules.add(ScoreFactory.getInstance().getScoreRule(Rules.SHOWJACK));
         }
 
     }

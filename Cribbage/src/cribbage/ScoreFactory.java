@@ -38,6 +38,8 @@ public class ScoreFactory {
             	return new ReachFifteenScore();
             case REACHTHIRTYONE:
             	return new ReachThirtyoneScore();
+            case SHOWJACK:
+                return new ShowJackScore();
             case GO:
             	return new GoScore();
             default:
