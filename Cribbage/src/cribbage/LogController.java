@@ -14,6 +14,7 @@ import cribbage.Cribbage.Suit;
 public class LogController {
     private static LogController instance = null;
     private static FileWriter fw;
+    private static int[] scores = new int[] {0,0};
     static {
         File log= new File ("cribbage.log");
         if (log.exists()) {
@@ -43,14 +44,21 @@ public class LogController {
         return instance;
     }
 
-    public void closeFile() throws IOException{
-        fw.flush();
-        fw.close();
+    public void closeFile(){
+        try {
+            fw.close();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
     }
 
     public void logScore(int player, String event ,int score) {
+        scores[player] += score;
         try {
-            fw.write("score,P" + player + "," + score + "," + event);
+            fw.write("score,P" + player + "," + scores[player] + "," + score + "," + event + "\n");
+            fw.flush();
+
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -58,9 +66,12 @@ public class LogController {
     }
 
     public void logScore(int player, String event, int score, ArrayList<Card> cards) { 
+        scores[player] += score;
         try {
             String cardlist= "[" + cards.stream().map(this::canonical).collect(Collectors.joining(",")) + "]";
-            fw.write("score,P" + player + "," + score + "," + event + cardlist);
+            fw.write("score,P" + player + "," + scores[player] + "," + score + "," + event +"," + cardlist + "\n");
+            fw.flush();
+
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -69,7 +80,19 @@ public class LogController {
 
     public void logSeed(int content){
         try {
-            fw.write("seed," + content);
+            fw.write("seed," + content + "\n");
+            fw.flush();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void logPlayer(String content, int player){
+        try {
+            fw.write(content + ",P" + player);
+            fw.flush();
+
         } catch (IOException e) {
             e.printStackTrace();
         }

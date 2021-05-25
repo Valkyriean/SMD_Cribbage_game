@@ -17,15 +17,14 @@ public class ShowRunsScoreRule implements IScoreRule{
             public int compare(Card c1, Card c2){
                 Rank r1 = (Rank) c1.getRank();
                 Rank r2 = (Rank) c2.getRank();
-                int order1 = r1.value;
-                int order2 = r2.value;
+                int order1 = r1.order;
+                int order2 = r2.order;
                 if (order1 - order2 == 0){
                     return c1.getSuitId() - c2.getSuitId();
                 } else {
                     return order1 - order2;
                 }
             }
-
         });
         // int [] runs = new int[5];
         // int count = 1;
@@ -71,13 +70,17 @@ public class ShowRunsScoreRule implements IScoreRule{
         //         return 0;
         // }
         
+        // for(int i =0; i<cards.size(); i++){
+        //     Rank r1 = (Rank) cards.get(i).getRank();
+        //     System.out.print("->"+ r1.order);
+        //     System.out.println();
+        // }
 
-
+        
         ArrayList<ArrayList<Card>> temp = new ArrayList<>();
-        boolean first = true;
-        for(int i = 0; i < hand.getNumberOfCards()-1; i++){
-            Rank r1 = (Rank) hand.get(i).getRank();
-            Rank r2 = (Rank) hand.get(i+1).getRank();
+        for(int i = 0; i < cards.size()-1; i++){
+            Rank r1 = (Rank) cards.get(i).getRank();
+            Rank r2 = (Rank) cards.get(i+1).getRank();
             int dif = r2.order - r1.order;
             if (i==0){
                 temp.clear();
@@ -96,17 +99,21 @@ public class ShowRunsScoreRule implements IScoreRule{
                 
             } else if (dif == 1){
                 for (int j = 0; j < temp.size(); j++){
-                    temp.get(j).add(hand.get(i+1));
+                    temp.get(j).add(cards.get(i+1));
                 }
             } else if (dif == 0){
-                for (int j = 0; j < temp.size(); j++){
+                int s = temp.size();
+                for (int j = 0; j < s; j++){
                     ArrayList<Card> tem2 = (ArrayList<Card>) temp.get(j).clone();
-                    tem2.set(tem2.size()-1, hand.get(i+1));
+                    tem2.set(tem2.size()-1, cards.get(i+1));
                     temp.add(tem2);
                 } 
             }
         }
         if (temp.get(0).size() >= 3){
+            for (int i = 0; i<temp.size();i++){
+                LogController.getInstance().logScore(player, "run"+temp.get(i).size(), temp.get(i).size(), temp.get(i));
+            }
             return temp.size() * temp.get(0).size();
         }else {
             return 0;

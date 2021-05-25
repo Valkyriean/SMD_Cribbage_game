@@ -355,7 +355,8 @@ void showHandsCrib() {
 	  discardToCrib();
 	  starter(pack);
 	  play();
-	  showHandsCrib();
+	  showHandsCrib(); 
+	  LogController.getInstance().closeFile();
 
     addActor(new Actor("sprites/gameover.gif"), textLocation);
     setStatusText("Game over.");
@@ -402,14 +403,17 @@ void showHandsCrib() {
 	  // Control Player Types
 	  Class<?> clazz;
 	  clazz = Class.forName(cribbageProperties.getProperty("Player0"));
+	  // LogController.getInstance().logPlayer(clazz.toString, 0);
+
 	  players[0] = (IPlayer) clazz.getConstructor().newInstance();
 	  clazz = Class.forName(cribbageProperties.getProperty("Player1"));
+	  // LogController.getInstance().logPlayer(clazz.toString, 1);
+
 	  players[1] = (IPlayer) clazz.getConstructor().newInstance();
 	  // End properties
 
 	  new Cribbage();
 	  
-	  LogController.getInstance().closeFile();
   }
 
 }
