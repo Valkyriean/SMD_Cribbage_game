@@ -14,7 +14,6 @@ public class ScoreFactory {
         return instance;
     }
 
-
     public IScoreRule getScoreRule (Rules r){
         switch (r) {
             case PLAYRUNS:
@@ -33,6 +32,14 @@ public class ScoreFactory {
                 return new ShowRunsScore();
             case SHOWPAIRS:
                 return new ShowPairsScore();
+            case JACK:
+            	return new JackScore();
+            case REACHFIFTEEN:;
+            	return new ReachFifteenScore();
+            case REACHTHIRTYONE:
+            	return new ReachThirtyoneScore();
+            case GO:
+            	return new GoScore();
             default:
                 return null;
         }

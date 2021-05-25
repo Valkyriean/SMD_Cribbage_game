@@ -1,7 +1,6 @@
 package cribbage;
 
 import java.util.ArrayList;
-
 import ch.aplu.jcardgame.Card;
 import ch.aplu.jcardgame.Hand;
 

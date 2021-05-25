@@ -258,6 +258,7 @@ private void play() {
 	List<Hand> segments = new ArrayList<>();
 	int currentPlayer = 0; // Player 1 is dealer
 	int score = 0;
+	IScoreRule rules;
 	Segment s = new Segment();
 	s.reset(segments);
 	while (!(players[0].emptyHand() && players[1].emptyHand())) {
@@ -266,7 +267,8 @@ private void play() {
 		if (nextCard == null) {
 			if (s.go) {
 				// Another "go" after previous one with no intervening cards
-				scores[s.lastPlayer] += Integer.valueOf(scoreProperties.getProperty("go"));
+				rules = ScoreFactory.getInstance().getScoreRule(Rules.GO);
+				scores[s.lastPlayer] += rules.getScore(null);
 				updateScore(s.lastPlayer);
 				System.out.println("GO +1");
 				// lastPlayer gets 1 point for a "go"
@@ -279,28 +281,28 @@ private void play() {
 		} else {
 			s.lastPlayer = currentPlayer; // last Player to play a card in this segment
 			transfer(nextCard, s.segment);
-				
-			IScoreRule rules = new PlayCompositeScore();
+			rules = ScoreFactory.getInstance().getScoreRule(Rules.PLAYCOMPOSITE);
 			score = rules.getScore(s.segment);
 			scores[s.lastPlayer] += score;
 			updateScore(s.lastPlayer);
 			
 			if (total(s.segment) == thirtyone) {
 				// lastPlayer gets 2 points for a 31
-				scores[s.lastPlayer] += Integer.valueOf(scoreProperties.getProperty("thirtyone"));
-				updateScore(s.lastPlayer);
+				rules = ScoreFactory.getInstance().getScoreRule(Rules.REACHTHIRTYONE);
+				scores[s.lastPlayer] += rules.getScore(null);
 				System.out.println("31 +2");
 				s.newSegment = true;
 				currentPlayer = (currentPlayer+1) % 2;
 			} else {
-				if (total(s.segment) == fifteen) {
-					scores[s.lastPlayer] += Integer.valueOf(scoreProperties.getProperty("fifteen"));;
+				if (total(s.segment) == fifteen) { 
+					// if total(segment) == 15, lastPlayer gets 2 points for a 15
+					rules = ScoreFactory.getInstance().getScoreRule(Rules.REACHFIFTEEN);
+					scores[s.lastPlayer] += rules.getScore(null);
 					updateScore(s.lastPlayer);
 					System.out.println("15 +2");
-
 				}
-				// if total(segment) == 15, lastPlayer gets 2 points for a 15
-				if (!s.go) { // if it is "go" then same player gets another turn
+				if (!s.go) { 
+					// if it is "go" then same player gets another turn
 					currentPlayer = (currentPlayer+1) % 2;
 				}
 			}
@@ -311,8 +313,8 @@ private void play() {
 		}
 	}
 	
-	scores[s.lastPlayer] += Integer.valueOf(scoreProperties.getProperty("go"));
-	updateScore(s.lastPlayer);
+	rules = ScoreFactory.getInstance().getScoreRule(Rules.GO);
+	scores[s.lastPlayer] += rules.getScore(null);
 	System.out.println("GO +1");
 
 }
