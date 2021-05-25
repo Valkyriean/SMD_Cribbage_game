@@ -130,6 +130,7 @@ public class Cribbage extends CardGame {
   private Hand starter;
   private Hand crib;
   private Hand showCrib;
+  static Properties scoreProperties = new Properties();
 
   public static void setStatus(String string) { cribbage.setStatusText(string); }
 
@@ -264,7 +265,7 @@ private void play() {
 		if (nextCard == null) {
 			if (s.go) {
 				// Another "go" after previous one with no intervening cards
-				scores[s.lastPlayer] += 1;
+				scores[s.lastPlayer] += Integer.valueOf(scoreProperties.getProperty("go"));
 				updateScore(s.lastPlayer);
 				System.out.println("GO +1");
 				// lastPlayer gets 1 point for a "go"
@@ -285,14 +286,14 @@ private void play() {
 			
 			if (total(s.segment) == thirtyone) {
 				// lastPlayer gets 2 points for a 31
-				scores[s.lastPlayer] += 2;
+				scores[s.lastPlayer] += scoreProperties.getProperty("thirtyone");
 				updateScore(s.lastPlayer);
 				System.out.println("31 +2");
 				s.newSegment = true;
 				currentPlayer = (currentPlayer+1) % 2;
 			} else {
 				if (total(s.segment) == fifteen) {
-					scores[s.lastPlayer] += 2;
+					scores[s.lastPlayer] += Integer.valueOf(scoreProperties.getProperty("fifteen"));;
 					updateScore(s.lastPlayer);
 					System.out.println("15 +2");
 
@@ -309,7 +310,7 @@ private void play() {
 		}
 	}
 	
-	scores[s.lastPlayer] += 1;
+	scores[s.lastPlayer] += Integer.valueOf(scoreProperties.getProperty("go"));
 	updateScore(s.lastPlayer);
 	System.out.println("GO +1");
 
@@ -372,6 +373,9 @@ void showHandsCrib() {
 	  // Read properties
 	  try (FileReader inStream = new FileReader("cribbage.properties")) {
 		  cribbageProperties.load(inStream);
+	  }
+	  try (FileReader inStream = new FileReader("score.properties")) {
+		  scoreProperties.load(inStream);
 	  }
 
 	  // Control Graphics
