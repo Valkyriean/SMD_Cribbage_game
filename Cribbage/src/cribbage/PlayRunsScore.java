@@ -32,27 +32,26 @@ public class PlayRunsScore implements IScoreRule{
 		switch (runsCount) {
 		case 3:
 			System.out.println("Runs +3");
-			score = 3;
+			score = ScoreAdapter.getInstance().loadScore("run3");
 			break;
 		case 4:
 			System.out.println("Runs +4");
-
-			score = 4;
+			score = ScoreAdapter.getInstance().loadScore("run4");;
 			break;
 		case 5:
 			System.out.println("Runs +5");
 
-			score = 5;
+			score = ScoreAdapter.getInstance().loadScore("run5");;
 			break;
 		case 6:
 			System.out.println("Runs +6");
 
-			score = 6;
+			score = ScoreAdapter.getInstance().loadScore("run6");;
 			break;
 		case 7:
 			System.out.println("Runs +7");
 
-			score = 7;
+			score = ScoreAdapter.getInstance().loadScore("run7");;
 			break;
 		}
 		return score;

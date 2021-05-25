@@ -4,7 +4,6 @@ import ch.aplu.jcardgame.Card;
 import ch.aplu.jcardgame.Hand;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.HashMap;
 
 public class FlushScore implements IScoreRule{
@@ -35,6 +34,13 @@ public class FlushScore implements IScoreRule{
                 }
             }
         }
-        return max;
+        switch (max){
+            case 4:
+                return ScoreAdapter.getInstance().loadScore("flush4");
+            case 5:
+                return ScoreAdapter.getInstance().loadScore("flush5");
+            default:
+                return 0;
+        }
     }
 }

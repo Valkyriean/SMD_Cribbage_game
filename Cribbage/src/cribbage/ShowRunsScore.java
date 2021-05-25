@@ -40,7 +40,15 @@ public class ShowRunsScore implements IScoreRule{
                 count += 1;
             }
         }
-        return max > 2? count*max : 0;
+        switch (max){
+            case 3:
+                return ScoreAdapter.getInstance().loadScore("run3") * count;
+            case 4:
+                return ScoreAdapter.getInstance().loadScore("run4") * count;
+            case 5:
+                return ScoreAdapter.getInstance().loadScore("run5") * count;
+            default:
+                return 0;
+        }
     }
-
 }

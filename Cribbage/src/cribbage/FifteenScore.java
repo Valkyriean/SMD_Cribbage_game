@@ -20,7 +20,7 @@ public class FifteenScore implements IScoreRule {
                 Cribbage.Rank rank2 = (Cribbage.Rank)cards.get(j).getRank();
                 sum = rank1.value + rank2.value;
                 if (sum == 15){
-                    score += 2;
+                    score += ScoreAdapter.getInstance().loadScore("fifteen");
                 }
             }
             i ++;

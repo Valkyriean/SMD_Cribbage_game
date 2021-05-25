@@ -1,14 +1,19 @@
 package cribbage;
 
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.Properties;
+
 public class ScoreFactory {
     static ScoreFactory instance = null;
-
     public static ScoreFactory getInstance(){
         if (instance == null){
             instance = new ScoreFactory();
         }
         return instance;
     }
+
 
     public IScoreRule getScoreRule (Rules r){
         switch (r) {

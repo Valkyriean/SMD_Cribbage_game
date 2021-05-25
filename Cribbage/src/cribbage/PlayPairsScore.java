@@ -17,15 +17,15 @@ public class PlayPairsScore implements IScoreRule{
 		switch (pairCount) {
 			case 2:
 				System.out.println("Pair +2");
-				score += 2;
+				score += ScoreAdapter.getInstance().loadScore("pair2");
 				break;
 			case 3:
 				System.out.println("Pair +6");
-				score += 6;
+				score += ScoreAdapter.getInstance().loadScore("pair3");;
 				break;
 			case 4:
 				System.out.println("Pair +12");
-				score += 12;
+				score += ScoreAdapter.getInstance().loadScore("pair4");;
 				break;
 		}
 		return score;
