@@ -243,6 +243,7 @@ private void play() {
 	final int fifteen = 15;
 	List<Hand> segments = new ArrayList<>();
 	int currentPlayer = 0; // Player 1 is dealer
+	int score = 0;
 	Segment s = new Segment();
 	s.reset(segments);
 	while (!(players[0].emptyHand() && players[1].emptyHand())) {
@@ -264,76 +265,11 @@ private void play() {
 		} else {
 			s.lastPlayer = currentPlayer; // last Player to play a card in this segment
 			transfer(nextCard, s.segment);
-			// check pair
-			int i = s.segment.getNumberOfCards()-1;
-			int pairCount = 1;
-			while(i>0 && s.segment.get(i).getRank()== s.segment.get(i-1).getRank()) {
-				System.out.print(i);
-				pairCount++;
-				i--;
-			}
-			switch (pairCount) {
-				case 2:
-					System.out.println("Pair +2");
-
-					scores[s.lastPlayer] += 2;
-					break;
-				case 3:
-					System.out.println("Pair +6");
-					scores[s.lastPlayer] += 6;
-					break;
-				case 4:
-					System.out.println("Pair +12");
-					scores[s.lastPlayer] += 12;
-					break;
-			}
-			//check runs
-			int runsCount = 1;
-			ArrayList<Integer> sequence = new ArrayList<>();
-			i = s.segment.getNumberOfCards()-1;
-			while(i>=0) {
-				Rank r = (Rank) s.segment.get(i).getRank();
-				sequence.add(r.order);
-				Collections.sort(sequence);
-				Set seqSet = new HashSet(sequence);
-				if(seqSet.size() < sequence.size()) {
-					break;
-				}
-				if(sequence.get(sequence.size()-1)-sequence.get(0) == sequence.size()-1) {
-					runsCount = sequence.size();
-				}
-				i--;
-			}
-
-			switch (runsCount) {
-			case 3:
-				System.out.println("Runs +3");
-				scores[s.lastPlayer] += 3;
-				break;
-			case 4:
-				System.out.println("Runs +4");
-
-				scores[s.lastPlayer] += 4;
-				break;
-			case 5:
-				System.out.println("Runs +5");
-
-				scores[s.lastPlayer] += 5;
-				break;
-			case 6:
-				System.out.println("Runs +6");
-
-				scores[s.lastPlayer] += 6;
-				break;
-			case 7:
-				System.out.println("Runs +7");
-
-				scores[s.lastPlayer] += 7;
-				break;
-			}
+				
+			IScoreRule rules = new PlayCompositeScore();
+			score = rules.getScore(s.segment, null);
+			scores[s.lastPlayer] += score;
 			updateScore(s.lastPlayer);
-
-			
 			
 			if (total(s.segment) == thirtyone) {
 				// lastPlayer gets 2 points for a 31
