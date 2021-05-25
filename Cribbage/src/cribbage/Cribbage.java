@@ -287,7 +287,7 @@ private void play() {
 			
 			if (total(s.segment) == thirtyone) {
 				// lastPlayer gets 2 points for a 31
-				scores[s.lastPlayer] += scoreProperties.getProperty("thirtyone");
+				scores[s.lastPlayer] += Integer.valueOf(scoreProperties.getProperty("thirtyone"));
 				updateScore(s.lastPlayer);
 				System.out.println("31 +2");
 				s.newSegment = true;
