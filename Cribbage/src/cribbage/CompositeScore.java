@@ -9,18 +9,19 @@ public class CompositeScore implements IScoreRule{
     ArrayList<IScoreRule> rules = new ArrayList<>();
 
     @Override
-    public int getScore(Hand start, ArrayList<Card> cards) {
+    public int getScore(Hand hand) {
         int score = 0;
         for (IScoreRule rule: rules){
-            score += rule.getScore(start,cards);
+            int temp = rule.getScore(hand);
+            score += temp;
         }
         return score;
     }
 
     public CompositeScore (){
-        rules.add(new FifteenScore());
-        rules.add(new RunScore());
-        rules.add(new PairsScore());
-        rules.add(new FlushScore());
+        rules.add(ScoreFactory.getInstance().getScoreRule(Rules.FIFTEEN));
+        rules.add(ScoreFactory.getInstance().getScoreRule(Rules.RUNS));
+        rules.add(ScoreFactory.getInstance().getScoreRule(Rules.PAIRS));
+        rules.add(ScoreFactory.getInstance().getScoreRule(Rules.FLUSH));
     }
 }

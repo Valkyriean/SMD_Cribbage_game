@@ -126,9 +126,10 @@ public class Cribbage extends CardGame {
   private final Actor[] scoreActors = {null, null}; //, null, null };
   private final Location textLocation = new Location(350, 450);
   private final Hand[] hands = new Hand[nPlayers];
-  private final ArrayList<ArrayList<Card>> handcards = new ArrayList<>();
+  private final Hand[] showHands = new Hand[nPlayers];
   private Hand starter;
   private Hand crib;
+  private Hand showCrib;
 
   public static void setStatus(String string) { cribbage.setStatusText(string); }
 
@@ -191,9 +192,13 @@ private void discardToCrib() {
 		crib.sort(Hand.SortType.POINTPRIORITY, true);
 	}
 	for (int i = 0; i <nPlayers; i++){
-		ArrayList<Card> cards = (ArrayList<Card>) players[i].hand.getCardList().clone();
-		handcards.add(cards);
+		Hand h1 = new Hand(deck); // Clone to sort without changing the original hand
+		for (Card C: hands[i].getCardList()) h1.insert(C.getSuit(), C.getRank(), false);
+		showHands[i] = h1;
 	}
+	showCrib = new Hand(deck);
+	for (Card C: crib.getCardList()) showCrib.insert(C.getSuit(), C.getRank(), false);
+
 }
 
 private void starter(Hand pack) {
@@ -211,6 +216,13 @@ private void starter(Hand pack) {
 	}
 	dealt.setVerso(false);
 	transfer(dealt, starter);
+	for (int i = 0; i < nPlayers; i++){
+		Hand h1 = showHands[i];
+		h1.insert(starter.getFirst().getSuit(),starter.getFirst().getRank(),false);
+		h1.sort(Hand.SortType.RANKPRIORITY, false);
+	}
+	showCrib.insert(starter.getFirst().getSuit(),starter.getFirst().getRank(),false);
+	showCrib.sort(Hand.SortType.RANKPRIORITY, false);
 }
 
 int total(Hand hand) {
@@ -267,7 +279,7 @@ private void play() {
 			transfer(nextCard, s.segment);
 				
 			IScoreRule rules = new PlayCompositeScore();
-			score = rules.getScore(s.segment, null);
+			score = rules.getScore(s.segment);
 			scores[s.lastPlayer] += score;
 			updateScore(s.lastPlayer);
 			
@@ -305,13 +317,13 @@ private void play() {
 
 void showHandsCrib() {
 
-	IScoreRule rules = new CompositeScore();
+	IScoreRule rules = ScoreFactory.getInstance().getScoreRule(Rules.COMPOSITE);
 	for (int i = 0; i < nPlayers; i++){
-		scores[i] += rules.getScore(starter,handcards.get(i));
+		scores[i] += rules.getScore(showHands[i]);
 		updateScore(i);
 	}
 
-	scores[1] += rules.getScore(starter,crib.getCardList());
+	scores[1] += rules.getScore(showCrib);
 	updateScore(1);
 	// score player 0 (non dealer)
 	// score player 1 (dealer)

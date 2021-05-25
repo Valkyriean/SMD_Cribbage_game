@@ -9,11 +9,8 @@ import java.util.HashSet;
 
 public class RunScore implements IScoreRule{
     @Override
-    public int getScore(Hand start, ArrayList<Card> cards) {
-        if (cards.size() !=5){
-            cards.add(start.getCardList().get(0));
-        }
-        cards.sort(Comparator.comparingInt(Card::getRankId));
+    public int getScore(Hand hand) {
+        ArrayList<Card> cards = hand.getCardList();
         int [] runs = new int[5];
         int count = 1;
         int slow  = 0;

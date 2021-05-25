@@ -9,11 +9,8 @@ import java.util.Comparator;
 public class FlushScore implements IScoreRule{
 
     @Override
-    public int getScore(Hand start, ArrayList<Card> cards) {
-        if (cards.size() !=5){
-            cards.add(start.getCardList().get(0));
-        }
-        cards.sort(Comparator.comparingInt(Card::getSuitId));
+    public int getScore(Hand hand) {
+        ArrayList<Card> cards = hand.getCardList();
         int i = 1;
         int [] flush = new int[5];
         flush[0] = 1;

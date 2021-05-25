@@ -9,11 +9,8 @@ import java.util.Comparator;
 public class FifteenScore implements IScoreRule {
 
     @Override
-    public int getScore(Hand start, ArrayList<Card> cards){
-        if (cards.size() !=5){
-            cards.add(start.getCardList().get(0));
-        }
-        cards.sort(Comparator.comparingInt(Card::getRankId));
+    public int getScore(Hand hand){
+        ArrayList<Card> cards = hand.getCardList();
         int i = 0;
         int score = 0;
         while (i < 5){

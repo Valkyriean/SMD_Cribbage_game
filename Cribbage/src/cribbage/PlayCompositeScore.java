@@ -9,10 +9,10 @@ public class PlayCompositeScore implements IScoreRule{
     ArrayList<IScoreRule> rules = new ArrayList<>();
 
     @Override
-    public int getScore(Hand hand, ArrayList<Card> cards) {
+    public int getScore(Hand hand) {
         int score = 0;
         for (IScoreRule rule: rules){
-            score += rule.getScore(hand,cards);
+            score += rule.getScore(hand);
         }
         return score;
     }

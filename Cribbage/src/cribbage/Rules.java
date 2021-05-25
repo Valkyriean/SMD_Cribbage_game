@@ -1,5 +1,5 @@
 package cribbage;
 
 public enum Rules {
-    TOTALVALUE, RUNS, PAIRS, FLUSH, STARTER, COMPOSITE, LASTCARD
+    FIFTEEN, RUNS, PAIRS, FLUSH, COMPOSITE
 }

@@ -6,5 +6,5 @@ import ch.aplu.jcardgame.Hand;
 import java.util.ArrayList;
 
 public interface IScoreRule {
-    int getScore(Hand start, ArrayList<Card> cards);
+    int getScore(Hand hand);
 }

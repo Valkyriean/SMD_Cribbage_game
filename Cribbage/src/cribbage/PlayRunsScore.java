@@ -11,7 +11,7 @@ import cribbage.Cribbage.Rank;
 
 public class PlayRunsScore implements IScoreRule{
     @Override
-	public int getScore(Hand hand, ArrayList<Card> cards) {
+	public int getScore(Hand hand) {
 		int runsCount = 1, score = 0;
 		ArrayList<Integer> sequence = new ArrayList<>();
 		int i = hand.getNumberOfCards()-1;

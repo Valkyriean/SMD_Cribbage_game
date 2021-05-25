@@ -7,7 +7,7 @@ import ch.aplu.jcardgame.Hand;
 
 public class PlayPairScore implements IScoreRule{
     @Override
-	public int getScore(Hand hand, ArrayList<Card> cards) {
+	public int getScore(Hand hand) {
     	int i = hand.getNumberOfCards()-1;
 		int pairCount = 1, score = 0;
 		while(i>0 && hand.get(i).getRank()== hand.get(i-1).getRank()) {
