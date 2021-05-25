@@ -9,9 +9,11 @@ import java.util.HashMap;
 public class FlushScoreRule implements IScoreRule{
 
     @Override
-    public int getScore(Hand hand) {
+    public int getScore(Hand hand, int player) {
+        String event = null;
+        int score = 0;
         Card start = hand.getLast();
-        ArrayList<Card> cards = hand.getCardList();
+        ArrayList<Card> cards = (ArrayList<Card>) hand.getCardList().clone();
         HashMap<Integer, Integer> map = new HashMap<>();
 
         for (Card c : cards){
@@ -36,11 +38,23 @@ public class FlushScoreRule implements IScoreRule{
         }
         switch (max){
             case 4:
-                return ScoreAdapter.getInstance().loadScore("flush4");
+                cards.remove(start);
+                cards.sort((o1,o2)->o1.getValue() - o2.getValue());
+                event = "flush4";
+                break;
             case 5:
-                return ScoreAdapter.getInstance().loadScore("flush5");
+                cards.sort((o1,o2)->o1.getValue() - o2.getValue());
+                event  = "flush5";
             default:
-                return 0;
+                break;
         }
+
+        if (event != null){
+            score = ScoreAdapter.getInstance().loadScore(event);
+            LogController.getInstance().logScore(player, event, score, cards);
+        } 
+        
+        return score;
+    
     }
 }

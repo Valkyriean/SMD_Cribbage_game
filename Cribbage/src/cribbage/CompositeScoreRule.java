@@ -9,10 +9,10 @@ public class CompositeScoreRule implements IScoreRule{
     ArrayList<IScoreRule> rules = new ArrayList<>();
 
     @Override
-    public int getScore(Hand hand) {
+    public int getScore(Hand hand, int player) {
         int score = 0;
         for (IScoreRule rule: rules){
-            int temp = rule.getScore(hand);
+            int temp = rule.getScore(hand, player);
             score += temp;
             System.out.println(rule.getClass()+" "+"score :" + temp);
         }

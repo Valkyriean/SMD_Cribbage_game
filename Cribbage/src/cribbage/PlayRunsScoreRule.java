@@ -11,10 +11,11 @@ import cribbage.Cribbage.Rank;
 
 public class PlayRunsScoreRule implements IScoreRule{
     @Override
-	public int getScore(Hand hand) {
+	public int getScore(Hand hand, int player) {
 		int runsCount = 1, score = 0;
 		ArrayList<Integer> sequence = new ArrayList<>();
 		int i = hand.getNumberOfCards()-1;
+		String event = null;
 		while(i>=0) {
 			Rank r = (Rank) hand.get(i).getRank();
 			sequence.add(r.order);
@@ -31,28 +32,24 @@ public class PlayRunsScoreRule implements IScoreRule{
 
 		switch (runsCount) {
 		case 3:
-			System.out.println("Runs +3");
-			score = ScoreAdapter.getInstance().loadScore("run3");
+			event = "run3";
 			break;
 		case 4:
-			System.out.println("Runs +4");
-			score = ScoreAdapter.getInstance().loadScore("run4");;
+			event = "run4";
 			break;
 		case 5:
-			System.out.println("Runs +5");
-
-			score = ScoreAdapter.getInstance().loadScore("run5");;
+			event = "run5";
 			break;
 		case 6:
-			System.out.println("Runs +6");
-
-			score = ScoreAdapter.getInstance().loadScore("run6");;
+			event = "run6";
 			break;
 		case 7:
-			System.out.println("Runs +7");
-
-			score = ScoreAdapter.getInstance().loadScore("run7");;
+			event = "run7";
 			break;
+		}
+		if(event != null) {
+			score = ScoreAdapter.getInstance().loadScore(event);
+			LogController.getInstance().logScore(player, event, score);
 		}
 		return score;
     }

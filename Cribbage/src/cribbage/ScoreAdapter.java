@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.util.Properties;
 
 public class ScoreAdapter {
-    static ScoreAdapter instance = null;
+    private static ScoreAdapter instance = null;
     final static Properties scoreProperties;
     static {
         scoreProperties = new Properties();
@@ -22,7 +22,6 @@ public class ScoreAdapter {
         }
         return instance;
     }
-
     public int loadScore(String key){
         String score = scoreProperties.getProperty(key);
         return Integer.parseInt(score);

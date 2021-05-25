@@ -9,20 +9,21 @@ import java.util.List;
 public class FifteenScoreRule implements IScoreRule {
 
     @Override
-    public int getScore(Hand hand){
-        ArrayList<Card> cards = hand.getCardList();
+    public int getScore(Hand hand, int player){
+        ArrayList<Card> cards = (ArrayList<Card>)hand.getCardList().clone();
+        cards.sort((o1,o2)->o1.getValue() - o2.getValue());
         int [] sum = {0};
         ArrayList<Card> temp = new ArrayList<>();
-        ArrayList<ArrayList<Card>> out = new ArrayList<>();
-        DFS(15, cards, sum, temp, out);
+
+        DFS(player, 15, cards, sum, temp);
         return sum[0];
     }
 
-    public void DFS (int target, ArrayList<Card> cards,int[] sum,
-                     ArrayList<Card> temp ,ArrayList<ArrayList<Card>> out){
+    public void DFS (int player, int target, ArrayList<Card> cards,int[] sum, ArrayList<Card> temp){
         if (target == 0){
             sum[0] += ScoreAdapter.getInstance().loadScore("fifteen");
-            out.add(temp);
+            LogController.getInstance().logScore(player, "fifteen", 
+            ScoreAdapter.getInstance().loadScore("fifteen"), temp);
         }
         if (target < 0){
             return;
@@ -36,7 +37,7 @@ public class FifteenScoreRule implements IScoreRule {
             temp.add(cards.get(i));
             Cribbage.Rank rank = (Cribbage.Rank)cards.get(i).getRank();
             int score = rank.value;
-            DFS(target - score, newCards, sum, temp, out);
+            DFS(player, target - score, newCards, sum, temp);
             temp.remove(cards.get(i));
         }
 

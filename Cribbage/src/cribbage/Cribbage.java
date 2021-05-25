@@ -213,7 +213,7 @@ private void starter(Hand pack) {
 	Card dealt = randomCard(pack);
 	if (dealt.getRank() == Rank.JACK ) {
 		IScoreRule rules = ScoreFactory.getInstance().getScoreRule(Rules.PLAYJACK);
-		scores[1] += rules.getScore(null);
+		scores[1] += rules.getScore(null, 1);
 		updateScore(1);
 		System.out.println("Jack start +2");
 
@@ -258,7 +258,7 @@ private void play() {
 	final int fifteen = 15;
 	List<Hand> segments = new ArrayList<>();
 	int currentPlayer = 0; // Player 1 is dealer
-	int score = 0;
+	int score = 0, player;
 	IScoreRule rules;
 	Segment s = new Segment();
 	s.reset(segments);
@@ -268,11 +268,11 @@ private void play() {
 		if (nextCard == null) {
 			if (s.go) {
 				// Another "go" after previous one with no intervening cards
-				rules = ScoreFactory.getInstance().getScoreRule(Rules.GO);
-				scores[s.lastPlayer] += rules.getScore(null);
-				updateScore(s.lastPlayer);
-				System.out.println("GO +1");
 				// lastPlayer gets 1 point for a "go"
+				player = s.lastPlayer;
+				rules = ScoreFactory.getInstance().getScoreRule(Rules.GO);
+				scores[player] += rules.getScore(null,player);
+				updateScore(player);
 				s.newSegment = true;
 			} else {
 				// currentPlayer says "go"
@@ -282,25 +282,25 @@ private void play() {
 		} else {
 			s.lastPlayer = currentPlayer; // last Player to play a card in this segment
 			transfer(nextCard, s.segment);
+			player = s.lastPlayer;
 			rules = ScoreFactory.getInstance().getScoreRule(Rules.PLAYCOMPOSITE);
-			score = rules.getScore(s.segment);
-			scores[s.lastPlayer] += score;
-			updateScore(s.lastPlayer);
+			score = rules.getScore(s.segment,player);
+			scores[player] += score;
+			updateScore(player);
 			
 			if (total(s.segment) == thirtyone) {
 				// lastPlayer gets 2 points for a 31
 				rules = ScoreFactory.getInstance().getScoreRule(Rules.REACHTHIRTYONE);
-				scores[s.lastPlayer] += rules.getScore(null);
-				System.out.println("31 +2");
+				scores[player] += rules.getScore(null, player);
+				updateScore(s.lastPlayer);
 				s.newSegment = true;
 				currentPlayer = (currentPlayer+1) % 2;
 			} else {
 				if (total(s.segment) == fifteen) { 
 					// if total(segment) == 15, lastPlayer gets 2 points for a 15
 					rules = ScoreFactory.getInstance().getScoreRule(Rules.REACHFIFTEEN);
-					scores[s.lastPlayer] += rules.getScore(null);
-					updateScore(s.lastPlayer);
-					System.out.println("15 +2");
+					scores[player] += rules.getScore(null, player);
+					updateScore(player);
 				}
 				if (!s.go) { 
 					// if it is "go" then same player gets another turn
@@ -313,22 +313,21 @@ private void play() {
 			s.reset(segments);
 		}
 	}
-	
+	player = s.lastPlayer;
 	rules = ScoreFactory.getInstance().getScoreRule(Rules.GO);
-	scores[s.lastPlayer] += rules.getScore(null);
-	System.out.println("GO +1");
-
+	scores[player] += rules.getScore(null, player);
+	updateScore(player);
 }
 
 void showHandsCrib() {
 
 	IScoreRule rules = ScoreFactory.getInstance().getScoreRule(Rules.SHOWCOMPOSITE);
 	for (int i = 0; i < nPlayers; i++){
-		scores[i] += rules.getScore(showHands[i]);
+		scores[i] += rules.getScore(showHands[i], i);
 		updateScore(i);
 	}
 
-	scores[1] += rules.getScore(showCrib);
+	scores[1] += rules.getScore(showCrib, 1);
 	updateScore(1);
 	// score player 0 (non dealer)
 	// score player 1 (dealer)
@@ -398,6 +397,7 @@ void showHandsCrib() {
 		  }
 	  }
 	  random = new Random(SEED);
+	  LogController.getInstance().logSeed(SEED);
 
 	  // Control Player Types
 	  Class<?> clazz;
@@ -408,6 +408,8 @@ void showHandsCrib() {
 	  // End properties
 
 	  new Cribbage();
+	  
+	  LogController.getInstance().closeFile();
   }
 
 }
