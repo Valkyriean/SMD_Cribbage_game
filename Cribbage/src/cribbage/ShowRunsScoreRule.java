@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashSet;
 
-public class ShowRunsScore implements IScoreRule{
+public class ShowRunsScoreRule implements IScoreRule{
     @Override
     public int getScore(Hand hand) {
         ArrayList<Card> cards = (ArrayList<Card>) hand.getCardList().clone();

@@ -7,7 +7,7 @@ import ch.aplu.jcardgame.Hand;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class ShowPairsScore implements IScoreRule{
+public class ShowPairsScoreRule implements IScoreRule{
     @Override
     public int getScore(Hand hand) {
         ArrayList<Card> cards = hand.getCardList();

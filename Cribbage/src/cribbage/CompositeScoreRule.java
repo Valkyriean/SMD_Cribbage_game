@@ -5,7 +5,7 @@ import ch.aplu.jcardgame.Hand;
 
 import java.util.ArrayList;
 
-public class CompositeScore implements IScoreRule{
+public class CompositeScoreRule implements IScoreRule{
     ArrayList<IScoreRule> rules = new ArrayList<>();
 
     @Override
@@ -19,7 +19,7 @@ public class CompositeScore implements IScoreRule{
         return score;
     }
 
-    public CompositeScore (boolean play){
+    public CompositeScoreRule(boolean play){
         if (play){
             rules.add(ScoreFactory.getInstance().getScoreRule(Rules.PLAYPAIRS));
             rules.add(ScoreFactory.getInstance().getScoreRule(Rules.PLAYRUNS));

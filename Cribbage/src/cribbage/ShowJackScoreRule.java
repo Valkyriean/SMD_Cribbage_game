@@ -5,7 +5,7 @@ import ch.aplu.jcardgame.Hand;
 
 import java.util.ArrayList;
 
-public class ShowJackScore implements IScoreRule {
+public class ShowJackScoreRule implements IScoreRule {
 
 
     @Override

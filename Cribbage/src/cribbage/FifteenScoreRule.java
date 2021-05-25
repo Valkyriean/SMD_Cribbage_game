@@ -6,7 +6,7 @@ import ch.aplu.jcardgame.Hand;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FifteenScore implements IScoreRule {
+public class FifteenScoreRule implements IScoreRule {
 
     @Override
     public int getScore(Hand hand){

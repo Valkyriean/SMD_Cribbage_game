@@ -212,7 +212,7 @@ private void starter(Hand pack) {
 	starter.draw();
 	Card dealt = randomCard(pack);
 	if (dealt.getRank() == Rank.JACK ) {
-		IScoreRule rules = ScoreFactory.getInstance().getScoreRule(Rules.JACK);
+		IScoreRule rules = ScoreFactory.getInstance().getScoreRule(Rules.PLAYJACK);
 		scores[1] += rules.getScore(null);
 		updateScore(1);
 		System.out.println("Jack start +2");

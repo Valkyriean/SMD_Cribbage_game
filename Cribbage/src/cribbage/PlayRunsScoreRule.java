@@ -9,7 +9,7 @@ import ch.aplu.jcardgame.Card;
 import ch.aplu.jcardgame.Hand;
 import cribbage.Cribbage.Rank;
 
-public class PlayRunsScore implements IScoreRule{
+public class PlayRunsScoreRule implements IScoreRule{
     @Override
 	public int getScore(Hand hand) {
 		int runsCount = 1, score = 0;

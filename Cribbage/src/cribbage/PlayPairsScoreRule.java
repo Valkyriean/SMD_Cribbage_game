@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import ch.aplu.jcardgame.Card;
 import ch.aplu.jcardgame.Hand;
 
-public class PlayPairsScore implements IScoreRule{
+public class PlayPairsScoreRule implements IScoreRule{
     @Override
 	public int getScore(Hand hand) {
     	int i = hand.getNumberOfCards()-1;

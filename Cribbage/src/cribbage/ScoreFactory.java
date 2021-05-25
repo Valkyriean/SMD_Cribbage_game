@@ -1,10 +1,5 @@
 package cribbage;
 
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.Properties;
-
 public class ScoreFactory {
     static ScoreFactory instance = null;
     public static ScoreFactory getInstance(){
@@ -17,31 +12,31 @@ public class ScoreFactory {
     public IScoreRule getScoreRule (Rules r){
         switch (r) {
             case PLAYRUNS:
-                return new PlayRunsScore();
+                return new PlayRunsScoreRule();
             case PLAYPAIRS:
-                return new PlayPairsScore();
+                return new PlayPairsScoreRule();
             case PLAYCOMPOSITE:
-                return new CompositeScore(true);
+                return new CompositeScoreRule(true);
             case FLUSH:
-                return new FlushScore();
+                return new FlushScoreRule();
             case SHOWCOMPOSITE:
-                return new CompositeScore(false);
+                return new CompositeScoreRule(false);
             case FIFTEEN:
-                return new FifteenScore();
+                return new FifteenScoreRule();
             case SHOWRUNS:
-                return new ShowRunsScore();
+                return new ShowRunsScoreRule();
             case SHOWPAIRS:
-                return new ShowPairsScore();
-            case JACK:
-            	return new JackScore();
+                return new ShowPairsScoreRule();
+            case PLAYJACK:
+            	return new PlayJackScoreRule();
             case REACHFIFTEEN:;
-            	return new ReachFifteenScore();
+            	return new ReachFifteenScoreRule();
             case REACHTHIRTYONE:
-            	return new ReachThirtyoneScore();
+            	return new ReachThirtyoneScoreRule();
             case SHOWJACK:
-                return new ShowJackScore();
+                return new ShowJackScoreRule();
             case GO:
-            	return new GoScore();
+            	return new GoScoreRule();
             default:
                 return null;
         }

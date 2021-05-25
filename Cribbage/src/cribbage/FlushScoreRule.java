@@ -6,7 +6,7 @@ import ch.aplu.jcardgame.Hand;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class FlushScore implements IScoreRule{
+public class FlushScoreRule implements IScoreRule{
 
     @Override
     public int getScore(Hand hand) {
