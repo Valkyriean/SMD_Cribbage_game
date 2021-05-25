@@ -65,7 +65,7 @@ public class LogController {
         }
     }
 
-    public void logScore(int player, String event, int score, ArrayList<Card> cards) { 
+    public void logScore(int player, String event, int score, ArrayList<Card> cards) {
         scores[player] += score;
         try {
             String cardlist= "[" + cards.stream().map(this::canonical).collect(Collectors.joining(",")) + "]";
@@ -90,25 +90,59 @@ public class LogController {
 
     public void logPlayer(String content, int player){
         try {
-            fw.write(content + ",P" + player);
+            fw.write(content + ",P" + player + "\n");
             fw.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
+    public void logDealDiscard(String type, int player, String canonical){
+        try {
+            fw.write(type + ",P" + player + ',' + canonical + "\n");
+            fw.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    public void logStarter(String canonical){
+        try {
+            fw.write("starter," + canonical + "\n");
+            fw.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void logPlay(int player, int score, String card){
+        try {
+            fw.write("play, P" + player + ',' + score + ',' + card + "\n");
+            fw.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void logShow(int player, String card, String canonical){
+        try {
+            fw.write("show,P" + player + ',' + card + '+' + canonical + "\n");
+            fw.flush();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
     String canonical(Card c) { return canonical((Rank) c.getRank()) + canonical((Suit) c.getSuit()); }
-    
+
     String canonical(Suit s) { return s.toString().substring(0, 1); }
 
-	String canonical(Rank r) {
-		switch (r) {
-			case ACE:case KING:case QUEEN:case JACK:case TEN:
-				return r.toString().substring(0, 1);
-			default:
-				return String.valueOf(r.value);
-		}
-	}
+    String canonical(Rank r) {
+        switch (r) {
+            case ACE:case KING:case QUEEN:case JACK:case TEN:
+                return r.toString().substring(0, 1);
+            default:
+                return String.valueOf(r.value);
+        }
+    }
 
 }

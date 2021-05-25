@@ -1,7 +1,24 @@
 seed,55510
+cribbage.RandomPlayer,P0
+cribbage.RandomPlayer,P1
+deal,P0,[2C,2H,7C,QC,QD,KH]
+deal,P1,[AD,AH,TD,JS,QH,KC]
+discard,P0,[2C,QC]
+discard,P1,[JS,KC]
+starter,[8H]
+play, P0,2,2H
+play, P1,3,AD
+play, P0,13,QD
 score,P1,2,2,pair2
+play, P1,23,QH
+play, P0,30,7C
 score,P1,4,2,thirtyone
+play, P1,31,AH
+play, P0,10,KH
+play, P1,20,TD
 score,P1,5,1,go
+show,P0,8H+[2H,7C,8H,QD,KH]
 score,P0,2,2,fifteen,[7C,8H]
+show,P1,8H+[AD,AH,8H,TD,QH]
 score,P1,7,2,pair2,[AD,AH]
 score,P1,10,3,run3,[JS,QC,KC]
