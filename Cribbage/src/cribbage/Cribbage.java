@@ -200,6 +200,8 @@ private void discardToCrib() {
 	showCrib = new Hand(deck);
 	for (Card C: crib.getCardList()) showCrib.insert(C.getSuit(), C.getRank(), false);
 
+
+
 }
 
 private void starter(Hand pack) {
@@ -220,7 +222,6 @@ private void starter(Hand pack) {
 	for (int i = 0; i < nPlayers; i++){
 		Hand h1 = showHands[i];
 		h1.insert(starter.getFirst().getSuit(),starter.getFirst().getRank(),false);
-		h1.sort(Hand.SortType.RANKPRIORITY, false);
 	}
 	showCrib.insert(starter.getFirst().getSuit(),starter.getFirst().getRank(),false);
 	showCrib.sort(Hand.SortType.RANKPRIORITY, false);
@@ -318,7 +319,7 @@ private void play() {
 
 void showHandsCrib() {
 
-	IScoreRule rules = ScoreFactory.getInstance().getScoreRule(Rules.COMPOSITE);
+	IScoreRule rules = ScoreFactory.getInstance().getScoreRule(Rules.SHOWCOMPOSITE);
 	for (int i = 0; i < nPlayers; i++){
 		scores[i] += rules.getScore(showHands[i]);
 		updateScore(i);

@@ -12,16 +12,22 @@ public class ScoreFactory {
 
     public IScoreRule getScoreRule (Rules r){
         switch (r) {
-            case RUNS:
-                return new RunScore();
-            case PAIRS:
-                return new PairsScore();
+            case PLAYRUNS:
+                return new PlayRunsScore();
+            case PLAYPAIRS:
+                return new PlayPairsScore();
+            case PLAYCOMPOSITE:
+                return new CompositeScore(true);
             case FLUSH:
                 return new FlushScore();
-            case COMPOSITE:
-                return new CompositeScore();
+            case SHOWCOMPOSITE:
+                return new CompositeScore(false);
             case FIFTEEN:
                 return new FifteenScore();
+            case SHOWRUNS:
+                return new ShowRunsScore();
+            case SHOWPAIRS:
+                return new ShowPairsScore();
             default:
                 return null;
         }
