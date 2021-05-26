@@ -28,15 +28,15 @@ public class ScoreFactory {
             case SHOWPAIRS:
                 return new ShowPairsScoreRule();
             case PLAYJACK:
-            	return new PlayJackScoreRule();
+            	return new PlayScoreRule("jack");
             case REACHFIFTEEN:;
-            	return new ReachFifteenScoreRule();
+            	return new PlayScoreRule("fifteen");
             case REACHTHIRTYONE:
-            	return new ReachThirtyoneScoreRule();
+            	return new PlayScoreRule("thirtyone");
             case SHOWJACK:
                 return new ShowJackScoreRule();
             case GO:
-            	return new GoScoreRule();
+            	return new PlayScoreRule("go");
             default:
                 return null;
         }
