@@ -300,14 +300,14 @@ public class Cribbage extends CardGame {
 			} else {
 				s.lastPlayer = currentPlayer; // last Player to play a card in this segment
 				transfer(nextCard, s.segment);
+				// record the deal card of player and write into the log file
+				LogController.getInstance().logPlay(currentPlayer, total(s.segment), canonical(nextCard));
 				player = s.lastPlayer;
 				rules = ScoreFactory.getInstance().getScoreRule(Rules.PLAYCOMPOSITE);
 				score = rules.getScore(s.segment,player);
 				scores[player] += score;
 				updateScore(player);
-				// record the deal card of player and write into the log file
-				LogController.getInstance().logPlay(s.lastPlayer, total(s.segment), canonical(nextCard));
-
+				
 				if (total(s.segment) == thirtyone) {
 					// lastPlayer gets 2 points for a 31
 					rules = ScoreFactory.getInstance().getScoreRule(Rules.REACHTHIRTYONE);
