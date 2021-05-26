@@ -16,7 +16,7 @@ public class ShowJackScoreRule implements IScoreRule {
         int total = 0;
         int score = 0;
         for (Card c : cards){
-            if (c.getRank().equals(Cribbage.Rank.JACK) && c.getSuitId() == starter.getSuitId()){
+            if (c.getRank().equals(Cribbage.Rank.JACK) && c.getSuit().equals(starter.getSuit())){
                 score = ScoreAdapter.getInstance().loadScore(event);
                 ArrayList<Card> cardList = new ArrayList<>();
                 cardList.add(c);

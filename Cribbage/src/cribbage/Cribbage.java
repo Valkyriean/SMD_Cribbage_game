@@ -225,7 +225,7 @@ public class Cribbage extends CardGame {
 			IScoreRule rules = ScoreFactory.getInstance().getScoreRule(Rules.PLAYJACK);
 			scores[1] += rules.getScore(null, 1);
 			updateScore(1);
-			System.out.println("Jack start +2");
+//			System.out.println("Jack start +2");
 
 		}
 		dealt.setVerso(false);
@@ -235,9 +235,8 @@ public class Cribbage extends CardGame {
 			h1.insert(starter.getFirst().getSuit(),starter.getFirst().getRank(),false);
 		}
 		showCrib.insert(starter.getFirst().getSuit(),starter.getFirst().getRank(),false);
-		showCrib.sort(Hand.SortType.RANKPRIORITY, false);
 
-		LogController.getInstance().logStarter(canonical(starter));
+		LogController.getInstance().logStarter(canonical(starter.getFirst()));
 
 	}
 
@@ -302,6 +301,7 @@ public class Cribbage extends CardGame {
 				updateScore(player);
 
 				if (total(s.segment) == thirtyone) {
+					LogController.getInstance().logPlay(s.lastPlayer, total(s.segment), canonical(nextCard));
 					// lastPlayer gets 2 points for a 31
 					rules = ScoreFactory.getInstance().getScoreRule(Rules.REACHTHIRTYONE);
 					scores[player] += rules.getScore(null, player);
@@ -309,6 +309,7 @@ public class Cribbage extends CardGame {
 					s.newSegment = true;
 					currentPlayer = (currentPlayer+1) % 2;
 				} else {
+					LogController.getInstance().logPlay(s.lastPlayer, total(s.segment), canonical(nextCard));
 					if (total(s.segment) == fifteen) {
 						// if total(segment) == 15, lastPlayer gets 2 points for a 15
 						rules = ScoreFactory.getInstance().getScoreRule(Rules.REACHFIFTEEN);
@@ -321,7 +322,7 @@ public class Cribbage extends CardGame {
 					}
 				}
 			}
-			LogController.getInstance().logPlay(s.lastPlayer, total(s.segment), canonical(nextCard));
+//			LogController.getInstance().logPlay(s.lastPlayer, total(s.segment), canonical(nextCard));
 
 			if (s.newSegment) {
 				segments.add(s.segment);
@@ -335,15 +336,14 @@ public class Cribbage extends CardGame {
 	}
 
 	void showHandsCrib() {
-
+		String cardStarter = canonical(starter).substring(1, 3);
 		IScoreRule rules = ScoreFactory.getInstance().getScoreRule(Rules.SHOWCOMPOSITE);
 		for (int i = 0; i < nPlayers; i++){
-			String cardStarter = canonical(starter).substring(1, 3);
 			LogController.getInstance().logShow(i, 	cardStarter, canonical(showHands[i]));
 			scores[i] += rules.getScore(showHands[i], i);
 			updateScore(i);
 		}
-
+		LogController.getInstance().logShow(1, 	cardStarter, canonical(crib));
 		scores[1] += rules.getScore(showCrib, 1);
 		updateScore(1);
 		// score player 0 (non dealer)

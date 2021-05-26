@@ -116,7 +116,7 @@ public class LogController {
 
     public void logPlay(int player, int score, String card){
         try {
-            fw.write("play, P" + player + ',' + score + ',' + card + "\n");
+            fw.write("play,P" + player + ',' + score + ',' + card + "\n");
             fw.flush();
         } catch (IOException e) {
             e.printStackTrace();
