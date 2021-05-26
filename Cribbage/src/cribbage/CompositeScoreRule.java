@@ -14,7 +14,6 @@ public class CompositeScoreRule implements IScoreRule{
         for (IScoreRule rule: rules){
             int temp = rule.getScore(hand, player);
             score += temp;
-            System.out.println(rule.getClass()+" "+"score :" + temp);
         }
         return score;
     }

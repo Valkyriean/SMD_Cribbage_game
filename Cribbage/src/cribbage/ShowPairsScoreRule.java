@@ -55,7 +55,6 @@ public class ShowPairsScoreRule implements IScoreRule{
                     total += score;
                     break;
                 default:
-                    System.out.println(map.get(key));
                     break;
             }
         }
