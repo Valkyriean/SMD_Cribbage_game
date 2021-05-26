@@ -339,10 +339,12 @@ public class Cribbage extends CardGame {
 				s.reset(segments);
 			}
 		}
-		player = s.lastPlayer;
-		rules = ScoreFactory.getInstance().getScoreRule(Rules.GO);
-		scores[player] += rules.getScore(null, player);
-		updateScore(player);
+		if (s.lastPlayer != -1) {
+			player = s.lastPlayer;
+			rules = ScoreFactory.getInstance().getScoreRule(Rules.GO);
+			scores[player] += rules.getScore(null, player);
+			updateScore(player);
+		}	
 	}
 
 	void showHandsCrib() {
