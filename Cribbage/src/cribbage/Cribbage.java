@@ -202,11 +202,14 @@ public class Cribbage extends CardGame {
 			LogController.getInstance().logDealDiscard("discard", j, canonical(temp));
 			j++;
 		}
+
+		// copy the cards in the hand of each player for calculating score
 		for (int i = 0; i <nPlayers; i++){
 			Hand h1 = new Hand(deck); // Clone to sort without changing the original hand
 			for (Card C: hands[i].getCardList()) h1.insert(C.getSuit(), C.getRank(), false);
 			showHands[i] = h1;
 		}
+		// copy the crib for calculating score
 		showCrib = new Hand(deck);
 		for (Card C: crib.getCardList()) showCrib.insert(C.getSuit(), C.getRank(), false);
 
@@ -221,22 +224,25 @@ public class Cribbage extends CardGame {
 		starter.setView(this, layout);
 		starter.draw();
 		Card dealt = randomCard(pack);
+		// write the starter card into log file
+		LogController.getInstance().logStarter(canonical(dealt));
 		if (dealt.getRank() == Rank.JACK ) {
+			// get score when starter is jack and write this event into log file
 			IScoreRule rules = ScoreFactory.getInstance().getScoreRule(Rules.PLAYJACK);
 			scores[1] += rules.getScore(null, 1);
 			updateScore(1);
-//			System.out.println("Jack start +2");
 
 		}
 		dealt.setVerso(false);
 		transfer(dealt, starter);
+
+		// add starter card into copy crib and copy hand
 		for (int i = 0; i < nPlayers; i++){
 			Hand h1 = showHands[i];
 			h1.insert(starter.getFirst().getSuit(),starter.getFirst().getRank(),false);
 		}
 		showCrib.insert(starter.getFirst().getSuit(),starter.getFirst().getRank(),false);
 
-		LogController.getInstance().logStarter(canonical(starter.getFirst()));
 
 	}
 
@@ -263,7 +269,7 @@ public class Cribbage extends CardGame {
 	}
 
 	/**
-	 *
+	 * play the game and calculate the score
 	 */
 	private void play() {
 		final int thirtyone = 31;
@@ -299,9 +305,10 @@ public class Cribbage extends CardGame {
 				score = rules.getScore(s.segment,player);
 				scores[player] += score;
 				updateScore(player);
+				// record the deal card of player and write into the log file
+				LogController.getInstance().logPlay(s.lastPlayer, total(s.segment), canonical(nextCard));
 
 				if (total(s.segment) == thirtyone) {
-					LogController.getInstance().logPlay(s.lastPlayer, total(s.segment), canonical(nextCard));
 					// lastPlayer gets 2 points for a 31
 					rules = ScoreFactory.getInstance().getScoreRule(Rules.REACHTHIRTYONE);
 					scores[player] += rules.getScore(null, player);
@@ -309,7 +316,6 @@ public class Cribbage extends CardGame {
 					s.newSegment = true;
 					currentPlayer = (currentPlayer+1) % 2;
 				} else {
-					LogController.getInstance().logPlay(s.lastPlayer, total(s.segment), canonical(nextCard));
 					if (total(s.segment) == fifteen) {
 						// if total(segment) == 15, lastPlayer gets 2 points for a 15
 						rules = ScoreFactory.getInstance().getScoreRule(Rules.REACHFIFTEEN);
@@ -322,8 +328,6 @@ public class Cribbage extends CardGame {
 					}
 				}
 			}
-//			LogController.getInstance().logPlay(s.lastPlayer, total(s.segment), canonical(nextCard));
-
 			if (s.newSegment) {
 				segments.add(s.segment);
 				s.reset(segments);
@@ -336,18 +340,19 @@ public class Cribbage extends CardGame {
 	}
 
 	void showHandsCrib() {
+		// record the stater
 		String cardStarter = canonical(starter).substring(1, 3);
 		IScoreRule rules = ScoreFactory.getInstance().getScoreRule(Rules.SHOWCOMPOSITE);
+		// calculate the score of each player
 		for (int i = 0; i < nPlayers; i++){
 			LogController.getInstance().logShow(i, 	cardStarter, canonical(showHands[i]));
 			scores[i] += rules.getScore(showHands[i], i);
 			updateScore(i);
 		}
+		// calculate the crib score for dealer
 		LogController.getInstance().logShow(1, 	cardStarter, canonical(crib));
 		scores[1] += rules.getScore(showCrib, 1);
 		updateScore(1);
-		// score player 0 (non dealer)
-		// score player 1 (dealer)
 
 
 

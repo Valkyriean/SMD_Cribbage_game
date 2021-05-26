@@ -1,7 +1,12 @@
 package cribbage;
 
+/** singleton score factory create different type of score rules
+ * */
 public class ScoreFactory {
     static ScoreFactory instance = null;
+
+    /** get ScoreFactory singleton
+     * */
     public static ScoreFactory getInstance(){
         if (instance == null){
             instance = new ScoreFactory();
@@ -9,6 +14,10 @@ public class ScoreFactory {
         return instance;
     }
 
+    /** get the different score rules instance
+     * @param r the type of score rules
+     * @return the instance of score rules
+     * */
     public IScoreRule getScoreRule (Rules r){
         switch (r) {
             case PLAYRUNS:

@@ -4,10 +4,17 @@ import ch.aplu.jcardgame.Card;
 import ch.aplu.jcardgame.Hand;
 
 import java.util.ArrayList;
-import java.util.List;
 
+/** Calculate the score of fifteen score rule
+ * */
 public class FifteenScoreRule implements IScoreRule {
 
+    /**
+     * calculate the score of cards in the hand that can sum to 15
+     * @param hand  the cards in the player's hand
+     * @param player playerId
+     * @return the score of fifteen rule
+     */
     @Override
     public int getScore(Hand hand, int player){
         ArrayList<Card> cards = (ArrayList<Card>)hand.getCardList().clone();
@@ -19,7 +26,9 @@ public class FifteenScoreRule implements IScoreRule {
         return sum[0];
     }
 
-    public void DFS (int player, int target, ArrayList<Card> cards,int[] sum, ArrayList<Card> temp){
+    // find all the combination that can sum to 15
+    private void DFS (int player, int target, ArrayList<Card> cards,int[] sum, ArrayList<Card> temp){
+        // sum to 15 write to log and record the score
         if (target == 0){
             sum[0] += ScoreAdapter.getInstance().loadScore("fifteen");
             LogController.getInstance().logScore(player, "fifteen", 
@@ -29,6 +38,7 @@ public class FifteenScoreRule implements IScoreRule {
             return;
         }
 
+        // find all combination
         for (int i = 0; i < cards.size(); i++){
             ArrayList<Card> newCards = new ArrayList<>();
             for (int j = i + 1; j < cards.size(); j++){

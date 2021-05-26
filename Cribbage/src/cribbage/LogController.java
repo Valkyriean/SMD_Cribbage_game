@@ -10,7 +10,8 @@ import ch.aplu.jcardgame.Card;
 import cribbage.Cribbage.Rank;
 import cribbage.Cribbage.Suit;
 
-
+/** write the event into the log
+ * */
 public class LogController {
     private static LogController instance = null;
     private static FileWriter fw;
@@ -36,7 +37,8 @@ public class LogController {
             }
         }
     }
-
+    /** get the LogController singleton
+     * */
     public static LogController getInstance(){
         if (instance == null){
             instance = new LogController();
@@ -44,15 +46,21 @@ public class LogController {
         return instance;
     }
 
+    /** close the file writer
+     * */
     public void closeFile(){
         try {
             fw.close();
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
     }
 
+    /** write the event into the log file in the play stage
+     * @param player playerId
+     * @param event type of score event
+     * @param score score get from cards
+     * */
     public void logScore(int player, String event ,int score) {
         scores[player] += score;
         try {
@@ -60,11 +68,16 @@ public class LogController {
             fw.flush();
 
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
     }
 
+    /** write the event into the log file in the show stage
+     * @param player playerId
+     * @param event type of score event
+     * @param score score get from cards
+     * @param cards the combination of cards which can reward the score
+     * */
     public void logScore(int player, String event, int score, ArrayList<Card> cards) {
         scores[player] += score;
         try {
@@ -78,6 +91,9 @@ public class LogController {
         }
     }
 
+    /** write the game seed into log file
+     * @param content seed number
+     * */
     public void logSeed(int content){
         try {
             fw.write("seed," + content + "\n");
@@ -88,6 +104,10 @@ public class LogController {
         }
     }
 
+    /** write the player name into log file
+     * @param content player name
+     * @param player playerId
+     * */
     public void logPlayer(String content, int player){
         try {
             fw.write(content + ",P" + player + "\n");
@@ -97,6 +117,12 @@ public class LogController {
         }
     }
 
+    /** write the deal to each player
+     *  and players' discard cards into log file
+     * @param type deal or discard
+     * @param player playerId
+     * @param canonical the string that can represent the card information
+     * */
     public void logDealDiscard(String type, int player, String canonical){
         try {
             fw.write(type + ",P" + player + ',' + canonical + "\n");
@@ -105,6 +131,10 @@ public class LogController {
             e.printStackTrace();
         }
     }
+
+    /** write the starter card into log
+     * @param canonical the string that can represent the card information
+     * */
     public void logStarter(String canonical){
         try {
             fw.write("starter," + canonical + "\n");
@@ -114,6 +144,10 @@ public class LogController {
         }
     }
 
+    /** write the card play dealt into log file
+     * @param player playerId
+     * @param  card dealt card
+     * */
     public void logPlay(int player, int score, String card){
         try {
             fw.write("play,P" + player + ',' + score + ',' + card + "\n");
@@ -123,6 +157,11 @@ public class LogController {
         }
     }
 
+    /** write the card list in the show stage into log file
+     * @param player playerId
+     * @param card starter card
+     * @param canonical the string that can represent the card information
+     * */
     public void logShow(int player, String card, String canonical){
         try {
             fw.write("show,P" + player + ',' + card + '+' + canonical + "\n");
@@ -132,11 +171,14 @@ public class LogController {
         }
     }
 
-    String canonical(Card c) { return canonical((Rank) c.getRank()) + canonical((Suit) c.getSuit()); }
+    // process the card information to string
+    private String canonical(Card c) { return canonical((Rank) c.getRank()) + canonical((Suit) c.getSuit()); }
 
-    String canonical(Suit s) { return s.toString().substring(0, 1); }
+    // process the card's suit to string
+    private String canonical(Suit s) { return s.toString().substring(0, 1); }
 
-    String canonical(Rank r) {
+    // process the card's rank to string
+    private String canonical(Rank r) {
         switch (r) {
             case ACE:case KING:case QUEEN:case JACK:case TEN:
                 return r.toString().substring(0, 1);

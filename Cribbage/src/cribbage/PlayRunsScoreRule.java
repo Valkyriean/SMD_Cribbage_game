@@ -8,14 +8,25 @@ import java.util.Set;
 import ch.aplu.jcardgame.Card;
 import ch.aplu.jcardgame.Hand;
 import cribbage.Cribbage.Rank;
-
+/**
+ * calculate the score of cards in the hand
+ * that can form pairs in play stage
+ */
 public class PlayRunsScoreRule implements IScoreRule{
-    @Override
+	/**
+	 * calculate the score of cards in the hand
+	 * that can form runs in play stage
+	 * @param hand  the cards in the player's hand
+	 * @param player playerId
+	 * @return the score of runs rule
+	 */
+	@Override
 	public int getScore(Hand hand, int player) {
 		int runsCount = 1, score = 0;
 		ArrayList<Integer> sequence = new ArrayList<>();
 		int i = hand.getNumberOfCards()-1;
 		String event = null;
+		// check whether can form runs or not
 		while(i>=0) {
 			Rank r = (Rank) hand.get(i).getRank();
 			sequence.add(r.order);
@@ -30,6 +41,7 @@ public class PlayRunsScoreRule implements IScoreRule{
 			i--;
 		}
 
+		// check the type of runs
 		switch (runsCount) {
 		case 3:
 			event = "run3";
@@ -47,6 +59,7 @@ public class PlayRunsScoreRule implements IScoreRule{
 			event = "run7";
 			break;
 		}
+		// write the event into the log file if runs formed
 		if(event != null) {
 			score = ScoreAdapter.getInstance().loadScore(event);
 			LogController.getInstance().logScore(player, event, score);

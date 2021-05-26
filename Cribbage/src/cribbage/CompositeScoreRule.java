@@ -1,13 +1,20 @@
 package cribbage;
 
-import ch.aplu.jcardgame.Card;
 import ch.aplu.jcardgame.Hand;
 
 import java.util.ArrayList;
-
+/** combine all the score rule together and calculate the total score
+ * */
 public class CompositeScoreRule implements IScoreRule{
-    ArrayList<IScoreRule> rules = new ArrayList<>();
+    private ArrayList<IScoreRule> rules;
 
+
+    /**
+     * calculate the score of cards in the hand
+     * @param hand  the cards in the player's hand
+     * @param player playerId
+     * @return the total score of cards
+     */
     @Override
     public int getScore(Hand hand, int player) {
         int score = 0;
@@ -18,7 +25,12 @@ public class CompositeScoreRule implements IScoreRule{
         return score;
     }
 
+    /** Construct the composite score rule in different stage
+     * @param play the stage of game
+     * */
     public CompositeScoreRule(boolean play){
+        rules = new ArrayList<>();
+        // only consider runs nad pairs in play stage
         if (play){
             rules.add(ScoreFactory.getInstance().getScoreRule(Rules.PLAYPAIRS));
             rules.add(ScoreFactory.getInstance().getScoreRule(Rules.PLAYRUNS));
