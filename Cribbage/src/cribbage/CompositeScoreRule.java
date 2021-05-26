@@ -30,7 +30,7 @@ public class CompositeScoreRule implements IScoreRule{
      * */
     public CompositeScoreRule(boolean play){
         rules = new ArrayList<>();
-        // only consider runs nad pairs in play stage
+        // only consider runs and pairs in play stage
         if (play){
             rules.add(ScoreFactory.getInstance().getScoreRule(Rules.PLAYPAIRS));
             rules.add(ScoreFactory.getInstance().getScoreRule(Rules.PLAYRUNS));
