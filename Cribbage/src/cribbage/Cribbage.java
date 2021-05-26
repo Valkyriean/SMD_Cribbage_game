@@ -128,6 +128,7 @@ public class Cribbage extends CardGame {
 	private final Location textLocation = new Location(350, 450);
 	private final Hand[] hands = new Hand[nPlayers];
 	private final Hand[] showHands = new Hand[nPlayers];
+	private final Hand[] logHands = new Hand[nPlayers];
 	private Hand starter;
 	private Hand crib;
 	private Hand showCrib;
@@ -208,6 +209,11 @@ public class Cribbage extends CardGame {
 			Hand h1 = new Hand(deck); // Clone to sort without changing the original hand
 			for (Card C: hands[i].getCardList()) h1.insert(C.getSuit(), C.getRank(), false);
 			showHands[i] = h1;
+		}
+		for (int i = 0; i <nPlayers; i++){
+			Hand h1 = new Hand(deck); // Clone to sort without changing the original hand
+			for (Card C: hands[i].getCardList()) h1.insert(C.getSuit(), C.getRank(), false);
+			logHands[i] = h1;
 		}
 		// copy the crib for calculating score
 		showCrib = new Hand(deck);
@@ -345,7 +351,7 @@ public class Cribbage extends CardGame {
 		IScoreRule rules = ScoreFactory.getInstance().getScoreRule(Rules.SHOWCOMPOSITE);
 		// calculate the score of each player
 		for (int i = 0; i < nPlayers; i++){
-			LogController.getInstance().logShow(i, 	cardStarter, canonical(showHands[i]));
+			LogController.getInstance().logShow(i, 	cardStarter, canonical(logHands[i]));
 			scores[i] += rules.getScore(showHands[i], i);
 			updateScore(i);
 		}

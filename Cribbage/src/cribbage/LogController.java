@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.stream.Collectors;
 
 import ch.aplu.jcardgame.Card;
@@ -80,6 +81,20 @@ public class LogController {
      * */
     public void logScore(int player, String event, int score, ArrayList<Card> cards) {
         scores[player] += score;
+        cards.sort(new Comparator<Card>(){
+            @Override
+            public int compare(Card c1, Card c2){
+                Rank r1 = (Rank) c1.getRank();
+                Rank r2 = (Rank) c2.getRank();
+                int order1 = r1.order;
+                int order2 = r2.order;
+                if (order1 - order2 == 0){
+                    return c1.getSuitId() - c2.getSuitId();
+                } else {
+                    return order1 - order2;
+                }
+            }
+        });
         try {
             String cardlist= "[" + cards.stream().map(this::canonical).collect(Collectors.joining(",")) + "]";
             fw.write("score,P" + player + "," + scores[player] + "," + score + "," + event +"," + cardlist + "\n");
