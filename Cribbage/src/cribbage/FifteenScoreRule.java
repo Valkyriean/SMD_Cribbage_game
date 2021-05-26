@@ -17,11 +17,8 @@ public class FifteenScoreRule implements IScoreRule {
      */
     @Override
     public int getScore(Hand hand, int player){
-        Card stater = hand.getLast();
         ArrayList<Card> cards = (ArrayList<Card>)hand.getCardList().clone();
-        cards.remove(stater);
         cards.sort((o1,o2)->o1.getValue() - o2.getValue());
-        cards.add(stater);
         int [] sum = {0};
         ArrayList<Card> temp = new ArrayList<>();
 
